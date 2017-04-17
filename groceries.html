@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Grocery List</title>
+  <link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/themes/smoothness/jquery-ui.css" />
+  <link href='http://fonts.googleapis.com/css?family=Oswald' rel='stylesheet' type='text/css'>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <div class="wrapper">
+<div class="popular">
+  <button data-food="bananas"> Banana </button>
+  <button data-food="apple"> Apple </button>
+  <button data-food="pear"> pear </button>
+  <button data-food="honey"> honey </button>
+</div>
+    <form class="item">
+      <h1>Grocery Getter 2000</h1>
+      <input type="text" name="itemName" placeholder="Grocery Name">
+      <label for="heading">
+        <input type="checkbox" name="heading" class="heading" id="heading">
+        Heading
+      </label>
+      <input type="submit" value="Add Grocery Item">
+    </form>
+
+    <ul class="groceries">
+      <li class="heading">Basics</li>
+      <li>Milk</li>
+      <li>Eggs</li>
+      <li>Bread</li>
+      <li class="heading">Kids</li>
+      <li>Koolaid</li>
+      <li>Popsicles</li>
+    </ul>
+
+    <ul class="got">
+      <li class="heading">Done</li>
+      <li>one</li>
+      <li>two</li>
+      <li>three</li>
+    </ul>
+
+  </div>
+
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/jquery-ui.min.js"></script>
+  <script>
+
+    // first we create an app namespace
+    var app = {};
+    //var str=$('.item input[type=text]').val();
+      
+    app.addItem = function(itemName){
+      // 1. write the code to create a list item and add it to the groceries list
+      // You can test it from the browser by running app.addHeading('Carrots');
+     
+      $('.groceries').append(`<li> ${itemName} </li>`);
+   // }
+
+    };
+    
+
+    app.addHeading = function(headingName) {
+      // 2. write the code to create a list item header and add it to the groceries list
+      // You can test it from the browser by running app.addHeading('Vegetables');
+          var hdng=$("<li>"+headingName+"</li>").addClass('heading');
+          $('.groceries').append(hdng);
+      };
+
+    app.init = function() {
+
+      // listen for the "submit" event on the form.
+      $('form.item').on('submit',function(e) {
+        // 3. stop the form from submitting and refreshing the page
+        e.preventDefault();
+        var str=$('input[type=text]').val();
+        // 4. Do stuff to make it go into the form
+        if($('input[type=checkbox]').is(':checked'))
+          { app.addHeading(str);} 
+        else
+          { app.addItem(str);}
+        this.reset();
+
+      });
+      $('[data-food]').on('click', function(){
+      app.addItem(this.dataset.food);
+    })  
+};
+      // 5. make it sortable with jQuery UI
+$('ul.groceries, ul.got').sortable({
+        connectWith: ".connected"
+      });
+    
+
+
+    $(function() {
+      // on document ready we run app.init
+      // we can't declare "str" here because its been checking input field on page load=document.ready=$(function()...) and at this tme is empty one
+      app.init();
+    });
+  </script>
+
+
+</body>
+</html>
